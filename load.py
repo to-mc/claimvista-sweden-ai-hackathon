@@ -10,7 +10,7 @@ from db_config import db_connection_string
 
 client = OpenAI()
 
-mongo_client = pymongo.MongoClient(mongo_client=pymongo.MongoClient(db_connection_string))
+mongo_client = pymongo.MongoClient(db_connection_string)
 db = mongo_client["vehicle_damage"]
 collection = db["vehicle_damage"]
 
