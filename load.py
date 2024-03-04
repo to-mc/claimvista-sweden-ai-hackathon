@@ -6,25 +6,23 @@ import random
 import pymongo
 from openai import OpenAI
 
-db_user = os.environ.get("ATLAS_USER")
-db_pass = os.environ.get("ATLAS_PASS")
-
-
-# Function to encode the image
-def encode_image(image_path):
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode("utf-8")
-
+from db_config import db_connection_string
 
 client = OpenAI()
-mongo_client = pymongo.MongoClient(
-    f"mongodb+srv://{db_user}:{db_pass}@hackathon.16xuc.mongodb.net/?retryWrites=true&w=majority&appName=Hackathon"
-)
+
+mongo_client = pymongo.MongoClient(mongo_client=pymongo.MongoClient(db_connection_string))
 db = mongo_client["vehicle_damage"]
 collection = db["vehicle_damage"]
 
 
+def encode_image(image_path):
+    """Encode the image as a base64 string."""
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
+
+
 def process_image(base64_image):
+    """Process the image using the OpenAI API and return the response as a JSON object."""
     response = client.chat.completions.create(
         model="gpt-4-vision-preview",
         messages=[
@@ -50,6 +48,7 @@ def process_image(base64_image):
 
 
 def estimate_cost(severity):
+    """Estimate the cost of the damage based on the severity."""
     if severity == "low":
         return random.randint(500, 2500)
     elif severity == "medium":
@@ -59,11 +58,13 @@ def estimate_cost(severity):
 
 
 def image_exists(image_path):
+    """Check if the image already exists in the database."""
     doc = collection.find_one({"image_path": image_path})
     return bool(doc)
 
 
 def main():
+    """Main function to process the images and store the data in the database."""
     images = os.listdir("./dataset")
     for image_path in images:
         if image_exists(image_path):

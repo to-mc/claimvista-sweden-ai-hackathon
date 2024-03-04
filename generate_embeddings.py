@@ -3,26 +3,23 @@ import os
 import pymongo
 from openai import OpenAI
 
-db_user = os.environ.get("ATLAS_USER")
-db_pass = os.environ.get("ATLAS_PASS")
+from db_config import db_connection_string
 
 client = OpenAI()
-mongo_client = pymongo.MongoClient(
-    f"mongodb+srv://{db_user}:{db_pass}@hackathon.16xuc.mongodb.net/?retryWrites=true&w=majority&appName=Hackathon"
-)
+
+mongo_client = pymongo.MongoClient(db_connection_string)
+db = mongo_client["vehicle_damage"]
+collection = db["vehicle_damage"]
 
 
 def get_embedding(damage_description):
-
+    """Get the vector embedding for the damage description."""
     response = client.embeddings.create(input=[damage_description], model="text-embedding-ada-002")
-
     return response
 
 
 def main():
-    db = mongo_client["vehicle_damage"]
-    collection = db["vehicle_damage"]
-
+    """Generate embeddings for the damage descriptions."""
     for document in collection.find():
         embedding = document.get("embedding")
         if not embedding:
