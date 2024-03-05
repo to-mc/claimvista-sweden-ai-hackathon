@@ -3,7 +3,7 @@
 ## Running the example
 
 1. Set the appropriate environment variables: `ATLAS_USER`, `ATLAS_PASS`, and `OPENAI_API_KEY`. Update `db_config.py` with the database hostname.
-2. Run `load.py`. This will use the gpt-4-vision model to generate a json document for each image in the `./datasets` directory, describing the damage and severity. We'll also include the base64 encoded image, and load the document into MongoDB. Example document:
+2. Run `describe_images_initial.py`. This will use the gpt-4-vision model to generate a json document for each image in the `./datasets` directory, describing the damage and severity. We'll also include the base64 encoded image, and load the document into MongoDB. Example document:
 
 ```json
 {

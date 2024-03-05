@@ -4,11 +4,16 @@ import os
 import random
 
 import pymongo
-from openai import OpenAI
+from openai import AzureOpenAI
 
 from db_config import db_connection_string
 
-client = OpenAI()
+client = AzureOpenAI(
+    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+    api_version="2023-12-01-preview",
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+)
+deployment_name = "gpt-4-vision"
 
 mongo_client = pymongo.MongoClient(db_connection_string)
 db = mongo_client["vehicle_damage"]
@@ -24,7 +29,7 @@ def encode_image(image_path):
 def process_image(base64_image):
     """Process the image using the OpenAI API and return the response as a JSON object."""
     response = client.chat.completions.create(
-        model="gpt-4-vision-preview",
+        model=deployment_name,
         messages=[
             {
                 "role": "user",

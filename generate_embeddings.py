@@ -1,9 +1,16 @@
+import os
+
 import pymongo
-from openai import OpenAI
+from openai import AzureOpenAI
 
 from db_config import db_connection_string
 
-client = OpenAI()
+client = AzureOpenAI(
+    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+    api_version="2023-12-01-preview",
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+)
+deployment_name = "text-embedding-ada-002"
 
 mongo_client = pymongo.MongoClient(db_connection_string)
 db = mongo_client["vehicle_damage"]
@@ -12,7 +19,7 @@ collection = db["vehicle_damage"]
 
 def get_embedding(damage_description):
     """Get the vector embedding for the damage description."""
-    response = client.embeddings.create(input=[damage_description], model="text-embedding-ada-002")
+    response = client.embeddings.create(input=[damage_description], model=deployment_name)
     return response
 
 
