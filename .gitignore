@@ -1,4 +1,4 @@
 venv
 .DS_STORE
-
+*\node_modules
 *.pyc
