@@ -1,9 +1,19 @@
 # Vehicle Damage Insurance Form
 
-## Running the example
+This application is run by an insurance company. It allows users to upload images of damages to their car, and will perform some analysis and help the user to fill out their claim. It will provide a description of the damages based on the image, as well as use the data from previous claims to help estimate the cost of repair. 
 
+## Setup and Installation
+
+There are 3 overall steps needed to get the demo up and running:
+
+1. Load the initial dataset. This will take the included data set consisting of images of damaged vehicles, and use the gpt-4-vision model to describe them in english. We will also generate vector embeddings for each image description, and store all the data in MongoDB.
+2. Deploy the app services resources.
+3. Run the frontend
+
+
+### Load the initial dataset
 1. Set the appropriate environment variables: `ATLAS_USER`, `ATLAS_PASS`, and `OPENAI_API_KEY`. Update `db_config.py` with the database hostname.
-2. Run `load.py`. This will use the gpt-4-vision model to generate a json document for each image in the `./datasets` directory, describing the damage and severity. We'll also include the base64 encoded image, and load the document into MongoDB. Example document:
+2. Run `describe_images_initial.py`. This will use the gpt-4-vision model to generate a json document for each image in the `./datasets` directory, describing the damage and severity. We'll also include the base64 encoded image, and load the document into MongoDB. Example document:
 
 ```json
 {
@@ -16,9 +26,9 @@
 }
 ```
 
-3. Run `generate_embeddings.py`. This will generate vector embeddings based on the damage description, and add them to the existing documents in the database under the `embeddings` field. 
+3. Run `generate_embeddings.py`. This will generate vector embeddings based on the damage description using text-embedding-ada-002, and add them to the existing documents in the database under the `embeddings` field. 
 
-4. Create the vector search index with Atlas Search:
+4. Create the vector search index with Atlas Search using the following index definition:
 
 ```json
 {
@@ -32,4 +42,16 @@
   ]
 }
 ```
+
+
+=======
+
+### Deploy the app services resources
+1. Todo
+
+### Run the frontend
+1. Navigate to the frontend directory: `$ cd frontend`
+2. Install dependencies: `npm install`
+3. Start the development server: `npm start`
+4. Browse to `localhost:3000` to access the site
 

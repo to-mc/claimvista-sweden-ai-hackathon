@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import config from "../config";
 
 const FindClaimView = () => {
   const [claims, setClaims] = useState([]);
@@ -29,16 +30,13 @@ const FindClaimView = () => {
     const requestBody = { searchTerm }; // Adjust based on the expected request body format
 
     try {
-      const response = await fetch(
-        "https://eu-central-1.aws.data.mongodb-api.com/app/aimngoclaims-ieeyr/endpoint/findClaim",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const response = await fetch(`${config.API_BASE_URL}/findClaim`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -69,16 +67,13 @@ const FindClaimView = () => {
     const requestBody = { embedding: claim.embedding, skip: 1, limit: 4 };
 
     try {
-      const response = await fetch(
-        "https://eu-central-1.aws.data.mongodb-api.com/app/aimngoclaims-ieeyr/endpoint/similarClaims",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const response = await fetch(`${config.API_BASE_URL}/similarClaims`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);

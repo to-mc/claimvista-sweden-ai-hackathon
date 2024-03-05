@@ -4,11 +4,16 @@ import os
 import random
 
 import pymongo
-from openai import OpenAI
+from openai import AzureOpenAI
 
 from db_config import db_connection_string
 
-client = OpenAI()
+client = AzureOpenAI(
+    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+    api_version="2023-12-01-preview",
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+)
+deployment_name = "gpt-4-vision"
 
 mongo_client = pymongo.MongoClient(db_connection_string)
 db = mongo_client["vehicle_damage"]
@@ -24,14 +29,18 @@ def encode_image(image_path):
 def process_image(base64_image):
     """Process the image using the OpenAI API and return the response as a JSON object."""
     response = client.chat.completions.create(
-        model="gpt-4-vision-preview",
+        model=deployment_name,
         messages=[
             {
                 "role": "user",
                 "content": [
                     {
                         "type": "text",
-                        "text": "Can you describe the damage to the vehicle, including a title and the severity (categorized as low, medium or high)? Please return json instead of text. The json structure should use the headings 'title', 'description', and 'severity'.",
+                        "text": (
+                            "Can you describe the damage to the vehicle, including a title and the severity "
+                            "(categorized as low, medium or high)? Please return json instead of text. The "
+                            "json structure should use the headings 'title', 'description', and 'severity'."
+                        ),
                     },
                     {
                         "type": "image_url",
@@ -50,11 +59,11 @@ def process_image(base64_image):
 def estimate_cost(severity):
     """Estimate the cost of the damage based on the severity."""
     if severity == "low":
-        return random.randint(500, 2500)
+        return random.randint(300, 1500)
     elif severity == "medium":
-        return random.randint(2500, 10000)
+        return random.randint(1000, 5000)
     else:
-        return random.randint(1000, 100000)
+        return random.randint(3000, 20000)
 
 
 def image_exists(image_path):
