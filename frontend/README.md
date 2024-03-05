@@ -49,7 +49,7 @@ Contributions to improve the Claims Management System are welcome. Please feel f
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 
 
-## Deploying Application
+## Creating and Deploying Application
 ## Prerequistes
 
 1. Created a new MongoDB Atlas project for your LOTR app
@@ -85,8 +85,6 @@ You will need to create an App in Atlas services. You can do it with a script, r
 ./setup.sh
 ```
 
-The setup script will also update the APP ID variable and App.js.
-
 env.var example:
 ```
 ATLAS_CLUSTER_NAME=demo-cluster
@@ -96,10 +94,32 @@ ATLAS_PROJECT_ID=5f49dca27a4f7e35487f7e0c
 APPLICATION_NAME=lotr2
 REALM_CLIENT_APP_ID=lotr-alugj
 ```
+## Update the configuration for the React Application
+Update the API_BASE_URL and CHART_BASE_URl
 
-App.js example:
+src/config.js example:
 ```
-const atlasAppId='lotr-alugj';
+const config = {
+  API_BASE_URL:
+    "https://eu-central-1.aws.data.mongodb-api.com/app/atlas_app_id}/endpoint",
+  CHART_BASE_URL:
+    "https://charts.mongodb.com/charts-tom-mccarthy-demo-project-giexs",
+  CHART_ID: "65e5f2bd-904d-46f8-8edb-57967c61d00f",
+};
 ```
 
-## Enable Hosting Services in your newly create App
+### Deploy application to App Services
+
+Before you can host your app in Atlas, you need to enable hosting. For more information see https://www.mongodb.com/docs/atlas/app-services/hosting/enable-hosting/
+
+Run below command in the root of repo, it will build the application and deploy it to App Services
+```
+./deploy.sh
+```
+
+### Access the application 
+You can now access the application from the endpoint described, in hosting/config.json   
+
+Example below:
+```
+"app_default_domain": "lotr-alugj.mongodbstitch.com"

@@ -46,15 +46,8 @@ The scripts below can be run multiple times, they will skip images in the datase
 }
 ```
 
-
-=======
-
 ### Deploy the app services resources
-1. Todo
+Follow the instructions in the folder frontend/README:md
 
-### Run the frontend
-1. Navigate to the frontend directory: `$ cd frontend`
-2. Install dependencies: `npm install`
-3. Start the development server: `npm start`
-4. Browse to `localhost:3000` to access the site
+
 
