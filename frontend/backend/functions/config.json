@@ -1,0 +1,32 @@
+[
+    {
+        "name": "createClaim",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "getSimilarClaims",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "getUnhadledClaims",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "createClaim_copy",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    },
+    {
+        "name": "findClaim",
+        "private": false,
+        "run_as_system": true,
+        "disable_arg_logs": true
+    }
+]

@@ -1,0 +1,5 @@
+{
+    "name": "azure-endpoint",
+    "value": "https://sweden-hackathon-team.openai.azure.com",
+    "from_secret": false
+}
