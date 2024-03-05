@@ -39,6 +39,7 @@ const ManageClaimView = () => {
 
       const data = await response.json(); // Assuming the server responds with JSON
       console.log("Claim updated successfully:", data);
+      setClaims([]);
 
       setOpenSnackbar(true); // Opens the Snackbar with a success message
     } catch (error) {
@@ -95,8 +96,11 @@ const ManageClaimView = () => {
       const response = await fetch(`${config.API_BASE_URL}/unhandledClaims`);
       const data = await response.json();
 
-      // Assuming the response is an array of claims
-      setClaims(data);
+      // Filter to only include claims where handled === false
+      const unhandledClaims = data.filter((claim) => claim.handled === false);
+
+      // Update state with the filtered list of unhandled claims
+      setClaims(unhandledClaims);
     };
 
     fetchClaims().catch(console.error); // Log errors to console
