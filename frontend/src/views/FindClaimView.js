@@ -7,8 +7,6 @@ import {
   CardContent,
   Modal,
   IconButton,
-  Button,
-  Snackbar,
   TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,14 +18,13 @@ const FindClaimView = () => {
   const [open, setOpen] = useState(false);
   const [selectedClaim, setSelectedClaim] = useState(null);
   const [similarClaims, setSimilarClaims] = useState([]);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = async () => {
     // Validate input
     if (!searchTerm.trim()) return;
 
-    const requestBody = { searchTerm }; // Adjust based on the expected request body format
+    const requestBody = { searchTerm };
 
     try {
       const response = await fetch(`${config.API_BASE_URL}/findClaim`, {
@@ -43,27 +40,15 @@ const FindClaimView = () => {
       }
 
       const fetchedClaims = await response.json();
-      setClaims(fetchedClaims); // Assuming the response directly contains the array of claims
+      setClaims(fetchedClaims);
     } catch (error) {
       console.error("Failed to fetch claims:", error);
       // Optionally, update UI to reflect that the search failed
     }
   };
 
-  const handleApplyEstimate = () => {
-    handleClose(); // Assuming this function closes the modal
-    setOpenSnackbar(true); // Opens the Snackbar for the toast message
-  };
-
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackbar(false);
-  };
-
   const handleOpen = async (claim) => {
-    // Define the request body, assuming `claim.embeddings` exists and is the correct format
+    // Define the request body
     const requestBody = { embedding: claim.embedding, skip: 1, limit: 4 };
 
     try {
@@ -81,15 +66,13 @@ const FindClaimView = () => {
 
       const similarClaimsData = await response.json();
       console.log(similarClaimsData.result);
-      setSimilarClaims(similarClaimsData.result); // Assume the response is in the correct format
-
+      setSimilarClaims(similarClaimsData.result);
       // After successfully fetching similar claims, open the modal with the selected claim
       setSelectedClaim(claim);
       setOpen(true);
     } catch (error) {
       console.error("Failed to fetch similar claims:", error);
       // Handle error, e.g., show an error message or log it
-      // Consider whether you still want to open the modal without similar claims
     }
   };
 
