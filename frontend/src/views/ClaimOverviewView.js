@@ -18,13 +18,32 @@ import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 
 const ClaimOverviewView = () => {
   const sdk = new ChartsEmbedSDK({
-    baseUrl: "https://charts.mongodb.com/charts-charts-fixture-tenant-zdvkh",
+    baseUrl: config.CHART_BASE_URL,
   });
 
   // embed a chart
   const chart = sdk.createChart({
-    chartId: "48043c78-f1d9-42ab-a2e1-f2d3c088f864",
+    chartId: config.CHART_ID,
+    height: "200px",
+    theme: "light",
   });
+  const chart1 = sdk.createChart({
+    chartId: config.CHART_ID1,
+    height: "200px",
+    theme: "light",
+  });
+
+  const chart2 = sdk.createChart({
+    chartId: config.CHART_ID2,
+    height: "200px",
+    theme: "light",
+  });
+
+  useEffect(() => {
+    chart.render(document.getElementById("chart"));
+    chart1.render(document.getElementById("chart1"));
+    chart2.render(document.getElementById("chart2"));
+  }, []);
 
   return (
     <>
@@ -41,7 +60,11 @@ const ClaimOverviewView = () => {
           boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
           padding: 2,
         }}
-      ></Box>
+      >
+        <div id="chart"></div>
+        <div id="chart1"></div>
+        <div id="chart2"></div>
+      </Box>
     </>
   );
 };
