@@ -11,6 +11,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import config from "../config";
 
 const ManageClaimView = () => {
   const [claims, setClaims] = useState([]);
@@ -19,9 +20,31 @@ const ManageClaimView = () => {
   const [similarClaims, setSimilarClaims] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const handleApplyEstimate = () => {
-    handleClose(); // Assuming this function closes the modal
-    setOpenSnackbar(true); // Opens the Snackbar for the toast message
+  const handleApplyEstimate = async () => {
+    handleClose();
+
+    try {
+      const response = await fetch(`${config.API_BASE_URL}/updateClaim`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // Include other headers as required, such as Authorization for Bearer tokens
+        },
+        body: JSON.stringify({ id: selectedClaim._id }), // Adjust payload as needed
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json(); // Assuming the server responds with JSON
+      console.log("Claim updated successfully:", data);
+
+      setOpenSnackbar(true); // Opens the Snackbar with a success message
+    } catch (error) {
+      console.error("Error updating the claim:", error);
+      // Optionally, setOpenSnackbar to display an error message instead
+    }
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -36,16 +59,13 @@ const ManageClaimView = () => {
     const requestBody = { embedding: claim.embedding, skip: 0, limit: 3 };
 
     try {
-      const response = await fetch(
-        "https://eu-central-1.aws.data.mongodb-api.com/app/aimngoclaims-ieeyr/endpoint/similarClaims",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const response = await fetch(`${config.API_BASE_URL}/similarClaims`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -72,9 +92,7 @@ const ManageClaimView = () => {
   useEffect(() => {
     // Fetch unhandled claims from the endpoint
     const fetchClaims = async () => {
-      const response = await fetch(
-        "https://eu-central-1.aws.data.mongodb-api.com/app/aimngoclaims-ieeyr/endpoint/unhandledClaims"
-      );
+      const response = await fetch(`${config.API_BASE_URL}/unhandledClaims`);
       const data = await response.json();
 
       // Assuming the response is an array of claims
@@ -223,7 +241,7 @@ const ManageClaimView = () => {
           </Typography>
           <Typography variant="body1" sx={{ mt: 2 }}>
             Based on similar claims, the average cost estimate is: $
-            {averageCostEstimate.toFixed(2)}
+            {averageCostEstimate.toFixed(0)}
           </Typography>
           {/* Apply Estimate Button */}
           <Box sx={{ display: "flex", justifyContent: "center" }}>
