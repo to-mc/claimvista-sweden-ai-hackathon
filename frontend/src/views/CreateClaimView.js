@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Box, Typography, TextField, Button, keyframes } from "@mui/material";
+import { Box, Typography, Button, keyframes } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera"; // Import an icon for the upload button
 import config from "../config";
 
@@ -7,7 +7,6 @@ const CreateClaimView = () => {
   const [image, setImage] = useState(null);
   // Initialize the messages state as an empty array
   const [messages, setMessages] = useState([]);
-  const [messageText, setMessageText] = useState("");
   const messagesEndRef = useRef(null);
   const [showSubmissionOptions, setShowSubmissionOptions] = useState(false);
   const [suggestedClaim, setSuggestedClaim] = useState(null);
@@ -64,7 +63,6 @@ const CreateClaimView = () => {
       console.log("Claim submission cancelled.");
       setImage(null);
       setMessages([]);
-      // Consider also resetting suggestedClaim if not needed anymore
       setSuggestedClaim(null);
     }
   };

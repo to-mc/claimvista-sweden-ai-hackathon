@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -7,8 +7,6 @@ import {
   CardContent,
   Modal,
   IconButton,
-  Button,
-  Snackbar,
   TextField,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,7 +18,6 @@ const FindClaimView = () => {
   const [open, setOpen] = useState(false);
   const [selectedClaim, setSelectedClaim] = useState(null);
   const [similarClaims, setSimilarClaims] = useState([]);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = async () => {
