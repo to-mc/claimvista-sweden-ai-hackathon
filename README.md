@@ -12,6 +12,9 @@ There are 3 overall steps needed to get the demo up and running:
 
 
 ### Load the initial dataset
+
+The scripts below can be run multiple times, they will skip images in the dataset for which they've already generated the appropriate description / embeddings.  
+
 1. Set the appropriate environment variables: `ATLAS_USER`, `ATLAS_PASS`, and `OPENAI_API_KEY`. Update `db_config.py` with the database hostname.
 2. Run `describe_images_initial.py`. This will use the gpt-4-vision model to generate a json document for each image in the `./datasets` directory, describing the damage and severity. We'll also include the base64 encoded image, and load the document into MongoDB. Example document:
 
