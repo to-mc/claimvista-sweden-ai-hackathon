@@ -32,7 +32,6 @@ const MyClaimsView = () => {
       const response = await fetch(`${config.API_BASE_URL}/unhandledClaims`);
       const data = await response.json();
 
-      // Assuming the response is an array of claims
       setClaims(data);
     };
 

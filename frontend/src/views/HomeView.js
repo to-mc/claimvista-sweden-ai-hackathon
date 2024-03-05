@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Box, Typography, Divider } from "@mui/material";
+import { Button, Box, Divider } from "@mui/material";
 
 const HomeView = ({ onNavigate }) => (
   <Box

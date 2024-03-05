@@ -28,23 +28,21 @@ const ManageClaimView = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Include other headers as required, such as Authorization for Bearer tokens
         },
-        body: JSON.stringify({ id: selectedClaim._id }), // Adjust payload as needed
+        body: JSON.stringify({ id: selectedClaim._id }),
       });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.json(); // Assuming the server responds with JSON
+      const data = await response.json();
       console.log("Claim updated successfully:", data);
       setClaims([]);
 
       setOpenSnackbar(true); // Opens the Snackbar with a success message
     } catch (error) {
       console.error("Error updating the claim:", error);
-      // Optionally, setOpenSnackbar to display an error message instead
     }
   };
 
@@ -56,7 +54,6 @@ const ManageClaimView = () => {
   };
 
   const handleOpen = async (claim) => {
-    // Define the request body, assuming `claim.embeddings` exists and is the correct format
     const requestBody = { embedding: claim.embedding, skip: 0, limit: 3 };
 
     try {
@@ -74,15 +71,12 @@ const ManageClaimView = () => {
 
       const similarClaimsData = await response.json();
       console.log(similarClaimsData.result);
-      setSimilarClaims(similarClaimsData.result); // Assume the response is in the correct format
-
+      setSimilarClaims(similarClaimsData.result);
       // After successfully fetching similar claims, open the modal with the selected claim
       setSelectedClaim(claim);
       setOpen(true);
     } catch (error) {
       console.error("Failed to fetch similar claims:", error);
-      // Handle error, e.g., show an error message or log it
-      // Consider whether you still want to open the modal without similar claims
     }
   };
 
