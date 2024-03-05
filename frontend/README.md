@@ -47,3 +47,59 @@ Contributions to improve the Claims Management System are welcome. Please feel f
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details.
+
+
+## Deploying Application
+## Prerequistes
+
+1. Created a new MongoDB Atlas project for your LOTR app
+2. Created a new cluster inside that project for LOTR data that is running
+3. Created an API Key inside that project, and recorded the public and private api keys,for more information see https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-for-a-project
+4. Installed dependencies for this script: node, mongodb-realm-cli"
+
+
+## Install AppServices CLI
+```
+npm install -g atlas-app-services-cli
+```
+
+## Update env.var
+
+Update the env.var to reflect your settings, you will need to update.
+
+
+Example:
+```
+ATLAS_CLUSTER_NAME=demo-cluster
+ATLAS_PUBLIC_API_KEY=wancyeds
+ATLAS_PRIVATE_API_KEY=db235axa-xdyd-3543-b534-19fe60e755ef
+ATLAS_PROJECT_ID=5f49dca27a4f7e35487f7e0c
+APPLICATION_NAME=lotr2
+REALM_CLIENT_APP_ID=
+```
+
+## Create an New App in Atlas App Services
+You will need to create an App in Atlas services. You can do it with a script, running setup.sh. You can also do it using the UI.
+
+```
+./setup.sh
+```
+
+The setup script will also update the APP ID variable and App.js.
+
+env.var example:
+```
+ATLAS_CLUSTER_NAME=demo-cluster
+ATLAS_PUBLIC_API_KEY=wancyeds
+ATLAS_PRIVATE_API_KEY=db235axa-xdyd-3543-b534-19fe60e755ef
+ATLAS_PROJECT_ID=5f49dca27a4f7e35487f7e0c
+APPLICATION_NAME=lotr2
+REALM_CLIENT_APP_ID=lotr-alugj
+```
+
+App.js example:
+```
+const atlasAppId='lotr-alugj';
+```
+
+## Enable Hosting Services in your newly create App
