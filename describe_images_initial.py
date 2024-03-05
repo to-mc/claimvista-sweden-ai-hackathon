@@ -36,7 +36,11 @@ def process_image(base64_image):
                 "content": [
                     {
                         "type": "text",
-                        "text": "Can you describe the damage to the vehicle, including a title and the severity (categorized as low, medium or high)? Please return json instead of text. The json structure should use the headings 'title', 'description', and 'severity'.",
+                        "text": (
+                            "Can you describe the damage to the vehicle, including a title and the severity "
+                            "(categorized as low, medium or high)? Please return json instead of text. The "
+                            "json structure should use the headings 'title', 'description', and 'severity'."
+                        ),
                     },
                     {
                         "type": "image_url",
@@ -55,11 +59,11 @@ def process_image(base64_image):
 def estimate_cost(severity):
     """Estimate the cost of the damage based on the severity."""
     if severity == "low":
-        return random.randint(300, 1200)
+        return random.randint(300, 1500)
     elif severity == "medium":
         return random.randint(1000, 5000)
     else:
-        return random.randint(5000, 20000)
+        return random.randint(3000, 20000)
 
 
 def image_exists(image_path):
