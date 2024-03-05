@@ -55,11 +55,11 @@ def process_image(base64_image):
 def estimate_cost(severity):
     """Estimate the cost of the damage based on the severity."""
     if severity == "low":
-        return random.randint(500, 2500)
+        return random.randint(300, 1200)
     elif severity == "medium":
-        return random.randint(2500, 10000)
+        return random.randint(1000, 5000)
     else:
-        return random.randint(1000, 100000)
+        return random.randint(5000, 20000)
 
 
 def image_exists(image_path):
