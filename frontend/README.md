@@ -58,9 +58,9 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 4. Installed dependencies for this script: node, mongodb-realm-cli"
 
 
-## Install Realm CLI
+## Install AppServices CLI
 ```
-npm install -g mongodb-realm-cli
+npm install -g atlas-app-services-cli
 ```
 
 ## Update env.var

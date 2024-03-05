@@ -26,12 +26,11 @@ configHosting='{
     "app_default_domain": "'$REALM_CLIENT_APP_ID.mongodbstitch.com'"
 }'
 
-realm-cli login -y --api-key="$ATLAS_PUBLIC_API_KEY" --private-api-key="$ATLAS_PRIVATE_API_KEY"
+appservices login --api-key=$ATLAS_PUBLIC_API_KEY --private-api-key=$ATLAS_PRIVATE_API_KEY
 cp -vaR build/ backend/hosting/files
 cd backend
 echo "$configDataSource" > data_sources/mongodb-atlas/config.json
 echo "$configHosting" > hosting/config.json
 echo "$configAppService" > realm_config.json
-
-realm-cli push -y --project="$ATLAS_PROJECT_ID" --remote="$REALM_CLIENT_APP_ID" --include-hosting 
+appservices push -y --project="$ATLAS_PROJECT_ID" --remote="$REALM_CLIENT_APP_ID" --include-hosting 
 cat hosting/config.json 
