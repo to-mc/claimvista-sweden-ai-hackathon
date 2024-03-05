@@ -24,7 +24,7 @@ const HomeView = ({ onNavigate }) => (
       variant="contained"
       size="large"
       sx={{ width: "100%" }}
-      onClick={() => onNavigate("manageClaim")}
+      onClick={() => onNavigate("myClaims")}
     >
       My Claims
     </Button>
@@ -49,7 +49,7 @@ const HomeView = ({ onNavigate }) => (
       variant="contained"
       size="large"
       sx={{ width: "100%" }}
-      onClick={() => onNavigate("manageClaim")}
+      onClick={() => onNavigate("claimOverview")}
     >
       Claim overview
     </Button>

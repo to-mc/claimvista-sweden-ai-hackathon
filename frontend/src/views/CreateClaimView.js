@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography, TextField, Button, keyframes } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera"; // Import an icon for the upload button
+import config from "../config";
 
 const CreateClaimView = () => {
   const [image, setImage] = useState(null);
@@ -8,12 +9,74 @@ const CreateClaimView = () => {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const messagesEndRef = useRef(null);
+  const [showSubmissionOptions, setShowSubmissionOptions] = useState(false);
+  const [suggestedClaim, setSuggestedClaim] = useState(null);
 
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]); // Depend on messages
+
+  const handleSubmissionResponse = async (response) => {
+    // Hide the buttons after selection
+    setShowSubmissionOptions(false);
+
+    if (response === "yes" && suggestedClaim) {
+      // Process affirmative response
+      console.log("Claim submission initiated.");
+      try {
+        const response = await fetch(`${config.API_BASE_URL}/submitClaim`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(suggestedClaim),
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log("Claim submission successful:", result);
+
+        // Inform the user that the claim creation is in progress
+        setTimeout(() => {
+          handleSendMessage(
+            "System",
+            `Claim creation in progress, check "My Claims" for status.`,
+            "system",
+            "text"
+          );
+        }, 400);
+      } catch (error) {
+        console.error("Claim submission failed:", error);
+        handleSendMessage(
+          "System",
+          "Failed to submit claim. Please try again.",
+          "system",
+          "text"
+        );
+      }
+    } else {
+      // Handle negative response
+      console.log("Claim submission cancelled.");
+      setImage(null);
+      setMessages([]);
+      // Consider also resetting suggestedClaim if not needed anymore
+      setSuggestedClaim(null);
+    }
+  };
+
+  const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+`;
 
   const slideIn = keyframes`
   from {
@@ -26,17 +89,28 @@ const CreateClaimView = () => {
   }
 `;
 
-  // Simulate sending a message to an LLM and receiving a response
-  const sendMessageToLLM = (userMessage) => {
-    // Simulate LLM processing delay
-    setTimeout(() => {
-      handleSendMessage(
-        "LLM",
-        "This is a simulated response based on your input.",
-        "llm",
-        "text"
-      );
-    }, 1000);
+  const getSuggestedClaim = async (base64Image) => {
+    try {
+      const response = await fetch(`${config.API_BASE_URL}/createClaim`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          base64Image.replace("data:image/jpeg;base64,", "")
+        ),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data; // Returns the response from the endpoint
+    } catch (error) {
+      console.error("Error fetching suggested claim:", error);
+      throw error; // Rethrow or handle error as needed
+    }
   };
 
   const handleImageChange = (event) => {
@@ -46,7 +120,6 @@ const CreateClaimView = () => {
       const reader = new FileReader();
 
       // Define what happens on file load
-      // This part remains inside the handleImageChange
       reader.onload = function (loadEvent) {
         const base64Image = loadEvent.target.result;
         setImage(base64Image); // You might want to display the image as a preview or directly in the chat
@@ -61,6 +134,43 @@ const CreateClaimView = () => {
 
         // Here, you send the image as a message
         handleSendMessage("User", base64Image, "user", "image");
+        getSuggestedClaim(base64Image)
+          .then((result) => {
+            result.image_base64 = base64Image.replace(
+              "data:image/jpeg;base64,",
+              ""
+            );
+
+            setSuggestedClaim(result);
+            const formattedMessage = `
+Here is the suggested claim:
+
+Title: ${result.title}
+
+Description: ${result.description}
+
+Cost estimate: $${Math.round(result.cost_estimate)}`;
+            handleSendMessage("System", formattedMessage, "system", "text");
+            setTimeout(() => {
+              handleSendMessage(
+                "System",
+                "Would you like to submit this claim?",
+                "system",
+                "text"
+              );
+              setShowSubmissionOptions(true);
+            }, 1000);
+          })
+          .catch((e) => {
+            handleSendMessage(
+              "System",
+              `There was an error creating your claim:
+              ${e}`,
+              "system",
+              "text"
+            );
+          });
+
         setTimeout(() => {
           handleSendMessage(
             "System",
@@ -90,21 +200,6 @@ const CreateClaimView = () => {
     };
 
     setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-    // If the message is from the user and it's text, simulate sending it to the LLM
-    if (contentType === "text" && sender === "User") {
-      sendMessageToLLM(content);
-    }
-
-    // Clear the message input if the sender is the user and it's text
-    if (contentType === "text") {
-      setMessageText("");
-    }
-  };
-
-  // Handle sending a user message when the "Send" button is clicked
-  const handleUserMessageSend = () => {
-    handleSendMessage("User", messageText, "user", "text");
   };
 
   return (
@@ -150,6 +245,7 @@ const CreateClaimView = () => {
                   padding: "8px",
                   borderRadius: "10px",
                   animation: `${slideIn} 0.3s ease-out forwards`,
+                  whiteSpace: "pre-wrap", // Preserves whitespace and line breaks
                 }}
               >
                 {`${msg.sender} at ${msg.timestamp}: ${msg.content}`}
@@ -176,7 +272,6 @@ const CreateClaimView = () => {
               </Box>
             );
           })}
-
           <div ref={messagesEndRef} />
           {/* Image upload button, shown if no image has been selected */}
           {!image && (
@@ -214,36 +309,38 @@ const CreateClaimView = () => {
               </Typography>
             </Box>
           )}
-        </Box>
-
-        {/* Chat input and send button */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "8px",
-            backgroundColor: "#ffffff",
-            boxShadow: "0 -2px 10px rgba(0,0,0,0.1)",
-          }}
-        >
-          <TextField
-            variant="outlined"
-            placeholder="Type your message here..."
-            value={messageText}
-            onChange={(e) => setMessageText(e.target.value)}
-            sx={{ mr: 2, flex: 1 }}
-            fullWidth
-            disabled={!image} // Keep disabled until an image is uploaded
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={!image || !messageText.trim()}
-            onClick={handleUserMessageSend}
-          >
-            Send
-          </Button>
+          {/* Conditional rendering of Yes and No buttons */}
+          {showSubmissionOptions && (
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "space-evenly",
+                animation: `${slideUp} 0.5s ease-out forwards`,
+                padding: "10px",
+                backgroundColor: "#f0f2f5",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="success"
+                size="large"
+                sx={{ width: "100%", marginRight: "10px" }}
+                onClick={() => handleSubmissionResponse("yes")}
+              >
+                Yes
+              </Button>
+              <Button
+                variant="contained"
+                color="error"
+                size="large"
+                sx={{ width: "100%", height: "55px" }}
+                onClick={() => handleSubmissionResponse("no")}
+              >
+                No
+              </Button>
+            </Box>
+          )}
         </Box>
       </Box>
     </>
