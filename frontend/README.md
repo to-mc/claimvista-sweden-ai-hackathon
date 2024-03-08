@@ -110,8 +110,6 @@ const config = {
 
 ### Deploy application to App Services
 
-Before you can host your app in Atlas, you need to enable hosting. For more information see https://www.mongodb.com/docs/atlas/app-services/hosting/enable-hosting/
-
 Run below command in the root of repo, it will build the application and deploy it to App Services
 ```
 ./deploy.sh
