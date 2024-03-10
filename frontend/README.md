@@ -10,6 +10,13 @@ This Claims Management System is a React-based application designed to streamlin
 - **Find Claim View**: Offers a search functionality to locate claims based on specific criteria.
 - **Similar Claims Analysis**: Upon selecting a claim, the system fetches and displays similar claims, including an average cost estimate to aid in evaluation.
 
+## Prerequistes
+
+1. Created a new MongoDB Atlas project for your Claim Vista app
+2. Created a new cluster inside that project for Claim Vista data that is running
+3. Created an API Key inside that project, and recorded the public and private api keys,for more information see https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-for-a-project
+4. Installed node and atlas-app-services-cli   ```npm install -g atlas-app-services-cli```
+
 ## Setup and Installation
 
 Ensure you have [Node.js](https://nodejs.org/) installed on your system to run this project.
@@ -18,20 +25,52 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your system to run t
    ```
    git clone <repository-url>
    ```
-2. Navigate to the project directory:
+
+2. Navigate to the project directory, in the root of the clone directory:
    ```
-   cd claims-management-system
+   cd frontend
    ```
-3. Install dependencies:
+3. Update env.var:
+
    ```
-   npm install
-   ```
-4. Start the development server:
-   ```
-   npm start
+   ATLAS_CLUSTER_NAME=demo-cluster
+   ATLAS_PUBLIC_API_KEY=wancyeds
+   ATLAS_PRIVATE_API_KEY=db235axa-xdyd-3543-b534-19fe60e755ef
+   ATLAS_PROJECT_ID=5f49dca27a4f7e35487f7e0c
+   APPLICATION_NAME=claimvista
+   REALM_CLIENT_APP_ID=
    ```
 
-The application will be available at `http://localhost:3000`.
+3. Create Application for ClaimVista in Atlas AppServices:
+   ```
+   ./setup.sh
+   ```
+4. Import src/claimvista.charts the claim vista charts, using the import function in Atlas Charts. You will need to connect configure the datasource. Once imported you will need to get the chart
+
+5.  Update the API_BASE_URL and CHART_BASE_URL, you can retrieve this from the Atlas UI, and select embedd.    
+
+src/config.js example:
+```
+const config = {
+  API_BASE_URL:
+    "https://eu-central-1.aws.data.mongodb-api.com/app/claimvistavapp-vnleo/endpoint",
+  CHART_BASE_URL:
+    "https://charts.mongodb.com/charts-claimvista-dev-mvitw",
+  CHART_ID: "65edc480-1171-45b3-8690-b66082c54b52",
+};
+
+6. Deploy application:
+   ```
+   ./deploy.sh
+   ```
+
+You can find the URL to the application by looking in App Services for the created application:
+You can now access the application from the endpoint described, in hosting/config.json   
+
+Example below:
+```
+"app_default_domain": "lotr-alugj.mongodbstitch.com"
+```
 
 ## Usage
 
@@ -49,75 +88,3 @@ Contributions to improve the Claims Management System are welcome. Please feel f
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 
 
-## Creating and Deploying Application
-## Prerequistes
-
-1. Created a new MongoDB Atlas project for your LOTR app
-2. Created a new cluster inside that project for LOTR data that is running
-3. Created an API Key inside that project, and recorded the public and private api keys,for more information see https://www.mongodb.com/docs/atlas/configure-api-access/#create-an-api-key-for-a-project
-4. Installed dependencies for this script: node, mongodb-realm-cli"
-
-
-## Install AppServices CLI
-```
-npm install -g atlas-app-services-cli
-```
-
-## Update env.var
-
-Update the env.var to reflect your settings, you will need to update.
-
-
-Example:
-```
-ATLAS_CLUSTER_NAME=demo-cluster
-ATLAS_PUBLIC_API_KEY=wancyeds
-ATLAS_PRIVATE_API_KEY=db235axa-xdyd-3543-b534-19fe60e755ef
-ATLAS_PROJECT_ID=5f49dca27a4f7e35487f7e0c
-APPLICATION_NAME=lotr2
-REALM_CLIENT_APP_ID=
-```
-
-## Create an New App in Atlas App Services
-You will need to create an App in Atlas services. You can do it with a script, running setup.sh. You can also do it using the UI.
-
-```
-./setup.sh
-```
-
-env.var example:
-```
-ATLAS_CLUSTER_NAME=demo-cluster
-ATLAS_PUBLIC_API_KEY=wancyeds
-ATLAS_PRIVATE_API_KEY=db235axa-xdyd-3543-b534-19fe60e755ef
-ATLAS_PROJECT_ID=5f49dca27a4f7e35487f7e0c
-APPLICATION_NAME=lotr2
-REALM_CLIENT_APP_ID=lotr-alugj
-```
-## Update the configuration for the React Application
-Update the API_BASE_URL and CHART_BASE_URl
-
-src/config.js example:
-```
-const config = {
-  API_BASE_URL:
-    "https://eu-central-1.aws.data.mongodb-api.com/app/atlas_app_id}/endpoint",
-  CHART_BASE_URL:
-    "https://charts.mongodb.com/charts-tom-mccarthy-demo-project-giexs",
-  CHART_ID: "65e5f2bd-904d-46f8-8edb-57967c61d00f",
-};
-```
-
-### Deploy application to App Services
-
-Run below command in the root of repo, it will build the application and deploy it to App Services
-```
-./deploy.sh
-```
-
-### Access the application 
-You can now access the application from the endpoint described, in hosting/config.json   
-
-Example below:
-```
-"app_default_domain": "lotr-alugj.mongodbstitch.com"
