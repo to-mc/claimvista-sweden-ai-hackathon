@@ -59,6 +59,9 @@ const config = {
   CHART_ID: "65edc480-1171-45b3-8690-b66082c54b52",
 };
 
+5. Before deploying you must enable hosting using the Atlas UI. For more information see: 
+Before you start using the App Services CLI with Static Hosting, you must enable hosting in the App Services UI.
+
 6. Deploy application:
    ```
    ./deploy.sh
