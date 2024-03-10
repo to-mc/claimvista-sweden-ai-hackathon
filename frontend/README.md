@@ -41,30 +41,30 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your system to run t
    REALM_CLIENT_APP_ID=
    ```
 
-3. Create Application for ClaimVista in Atlas AppServices:
+4. Create Application for ClaimVista in Atlas AppServices:
    ```
    ./setup.sh
    ```
-4. Import src/claimvista.charts the claim vista charts, using the import function in Atlas Charts. You will need to connect configure the datasource. Once imported you will need to get the chart
+5. Import src/claimvista.charts the claim vista charts, using the import function in Atlas Charts. You will need to connect configure the datasource. Once imported you will need to get the chart
 
-5.  Update the API_BASE_URL and CHART_BASE_URL, you can retrieve this from the Atlas UI, and select embedd.    
+6.  Update the API_BASE_URL and CHART_BASE_URL, you can retrieve this from the Atlas UI, and select embedd.  src/config.js example:
 
-src/config.js example:
-```
-const config = {
-  API_BASE_URL:
-    "https://eu-central-1.aws.data.mongodb-api.com/app/claimvistavapp-vnleo/endpoint",
-  CHART_BASE_URL:
-    "https://charts.mongodb.com/charts-claimvista-dev-mvitw",
-  CHART_ID: "65edc480-1171-45b3-8690-b66082c54b52",
-};
+   ```
+      const config = {
+      API_BASE_URL:
+         "https://eu-central-1.aws.data.mongodb-api.com/app/claimvistavapp-vnleo/endpoint",
+      CHART_BASE_URL:
+         "https://charts.mongodb.com/charts-claimvista-dev-mvitw",
+      CHART_ID: "65edc480-1171-45b3-8690-b66082c54b52",
+      };
+   ```
 
-5. Before deploying you must enable hosting using the Atlas UI. For more information see: 
+7. Before deploying you must enable hosting using the Atlas UI. For more information see: 
 Before you start using the App Services CLI with Static Hosting, you must enable hosting in the App Services UI.
 
-6. Deploy application:
+8. Deploy application:
    ```
-   ./deploy.sh
+      ./deploy.sh
    ```
 
 You can find the URL to the application by looking in App Services for the created application:
