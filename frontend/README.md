@@ -59,8 +59,8 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your system to run t
       };
    ```
 
-7. Before deploying you must enable hosting using the Atlas UI. For more information see: 
-Before you start using the App Services CLI with Static Hosting, you must enable hosting in the App Services UI.
+7. Before deploying you must enable hosting using the Atlas UI. For more information see:  https://www.mongodb.com/docs/atlas/app-services/hosting/host-a-single-page-application/#procedure
+
 
 8. Deploy application:
    ```
