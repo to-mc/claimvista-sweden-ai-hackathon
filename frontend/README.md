@@ -1,4 +1,5 @@
 # Claims Management System
+<img src="../screenshot.png" height="50%" width="50%">
 
 This Claims Management System is a React-based application designed to streamline the process of creating, managing, and finding insurance claims. It utilizes Material-UI for a polished, user-friendly interface and includes features such as claim creation, search functionality, and a detailed view of claims with similar cases and cost estimates.
 
@@ -47,15 +48,15 @@ Ensure you have [Node.js](https://nodejs.org/) installed on your system to run t
    ```
 5. Import src/claimvista.charts the claim vista charts, using the import function in Atlas Charts. You will need to connect configure the datasource. Once imported you will need to get the chart
 
-6.  Update the API_BASE_URL and CHART_BASE_URL, you can retrieve this from the Atlas UI, and select embedd.  src/config.js example:
+6.  Update the API_BASE_URL and CHART_BASE_URL, you can retrieve this from the Atlas UI, and select embedd.  Below an example of src/config.js
 
    ```
       const config = {
-      API_BASE_URL:
-         "https://eu-central-1.aws.data.mongodb-api.com/app/claimvistavapp-vnleo/endpoint",
-      CHART_BASE_URL:
-         "https://charts.mongodb.com/charts-claimvista-dev-mvitw",
-      CHART_ID: "65edc480-1171-45b3-8690-b66082c54b52",
+         API_BASE_URL: "https://data.mongodb-api.com/app/claimvista-nnmqw/endpoint",
+         CHART_BASE_URL: "https://charts.mongodb.com/charts-claimvista-dev-mvitw",
+         CHART_ID: "65edc480-1171-4a62-8a05-b66082c54b62",
+         CHART_ID1: "65edc480-1171-4358-8486-b66082c54b5c",
+         CHART_ID2: "65edc480-1171-430e-8086-b66082c54b6a",
       };
    ```
 
@@ -74,7 +75,7 @@ Example below:
 ```
 "app_default_domain": "lotr-alugj.mongodbstitch.com"
 ```
-
+9. Create a Claim, and then
 ## Usage
 
 - **Navigating the Application**: Use the navigation bar at the top to switch between different views.

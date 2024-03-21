@@ -141,7 +141,7 @@ exports = async function ({ query, headers, body }, response) {
       description: dataImageDescription,
       title: dataImageTitle,
       severity: dataImageSeverity,
-      embeddings: parsed_embedding,
+      embedding: parsed_embedding,
       cost_estimate: avg_cost_estimate,
     })
   );
