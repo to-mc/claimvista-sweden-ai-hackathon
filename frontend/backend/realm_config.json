@@ -1,7 +1,7 @@
 {
     "config_version": 20210101,
-    "app_id": "Hackathon",
-    "name": "claimvistav2",
+    "app_id": "claimvistadb",
+    "name": "claimvista",
     "location": "US-VA",
     "deployment_model": "GLOBAL"
 }

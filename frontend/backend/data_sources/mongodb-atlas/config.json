@@ -2,7 +2,7 @@
     "name": "mongodb-atlas",
     "type": "mongodb-atlas",
     "config": {
-        "clusterName": "Hackathon",
+        "clusterName": "claimvistadb",
         "readPreference": "primary",
         "wireProtocolEnabled": false
     },
